@@ -6,7 +6,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from dotenv import load_dotenv
 from supabase import create_client
-from sentence_transformers import SentenceTransformer
 from ollama import chat
 import pandas as pd
 
@@ -19,10 +18,22 @@ key = os.getenv("SUPABASE_KEY")
 supabase = create_client(url, key)
 
 
-# Embedding model
-embedding_model = SentenceTransformer(
-    "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
-)
+
+# Load embedding model only when needed
+embedding_model = None
+
+def get_embedding_model():
+    global embedding_model
+
+    if embedding_model is None:
+        from sentence_transformers import SentenceTransformer
+
+        embedding_model = SentenceTransformer(
+            "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+        )
+
+    return embedding_model
+
 
 
 app = FastAPI()
@@ -156,7 +167,7 @@ def ask_vyapaar(data: Question):
 
     question = data.question
 
-    query_embedding = embedding_model.encode(question).tolist()
+    query_embedding = get_embedding_model().encode(question).tolist()
 
     search_response = supabase.rpc(
         "match_memories",
