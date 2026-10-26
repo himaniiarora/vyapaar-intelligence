@@ -339,7 +339,7 @@ function Landing({ onDashboard }: { onDashboard: () => void }) {
       <footer className="site-footer section-shell">
         <Logo small />
         <span>Data → Memory → Intelligence → Action</span>
-        <span>© 2025 Vyapaar Intelligence</span>
+        <span>© 2026 Vyapaar Intelligence</span>
       </footer>
     </div>
   )
@@ -906,7 +906,7 @@ function Dashboard({
 
           <div className="dashboard-actions">
             <button className="date-button">
-              May 01 – Jun 09, 2025
+              May 01 – Jun 09, 2026
               <ChevronRight size={14} />
             </button>
 
